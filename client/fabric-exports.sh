@@ -3,13 +3,13 @@
 
 # Update these values, then `source` this script
 export REGION=us-east-1
-export NETWORKNAME=mtube
+export NETWORKNAME=mtube2
 export MEMBERNAME=mdist
 export NETWORKVERSION=1.2
 export ADMINUSER=admin1
 export ADMINPWD=Password123
-export NETWORKID=n-RMBIOZXBUBAMPB2VIYCCTH74RU
-export MEMBERID=m-ZE5ESRQNIRFW5BKUDFX3AIA63Q
+export NETWORKID=n-GJSCUK3YGJHV3LTEPAGJZTRNP4
+export MEMBERID=m-NILPCRFNNNBJNKLWEQQZZ4L22E
 
 # No need to change anything below here
 echo Updating AWS CLI to the latest version
