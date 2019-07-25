@@ -1,6 +1,6 @@
 {
 	"name": "mtube",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"description": "mtube node.js",
 	"engines": {
 		"node": ">=8.4.0",
