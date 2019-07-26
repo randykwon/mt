@@ -2,15 +2,15 @@
     "host":"localhost",
     "port":"3000",
     "channelName":"mychannel",
-    "chaincodeName":"ngo",
+    "chaincodeName":"mtube",
     "eventWaitTime":"30000",
     "peers":[
         "peer1"
     ],
     "admins":[
        {
-          "username":"admin",
-          "secret":"Adminpwd1!"
+          "username":"admin1",
+          "secret":"Adminpassword123"
        }
     ]
  }
