@@ -19,7 +19,7 @@
 
 'use strict';
 var util = require('util');
-var helper = require('./connection.js.js');
+var helper = require('./connection.js');
 var logger = helper.getLogger('BlockListener');
 
 var startBlockListener = async function(channelName, username, orgName, websocketServer) {

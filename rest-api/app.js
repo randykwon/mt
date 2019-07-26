@@ -58,8 +58,8 @@ var blockListener = require('./blocklistener.js');
 hfc.addConfigFile('config.json');
 var host = 'localhost';
 var port = 3000;
-var username = "admin1";
-var orgName = "Password123";
+var username = "";
+var orgName = "";
 var channelName = hfc.getConfigSetting('channelName');
 var chaincodeName = hfc.getConfigSetting('chaincodeName');
 // echo $PEER
@@ -141,6 +141,32 @@ app.get('/health', awaitHandler(async (req, res) => {
 //
 //
 // POST register
+/**
+ * @swagger
+ *
+ * /register:
+ *   post:
+ *     summary: Register Contents.
+ *     tags:
+ *       - register
+ *     description: A user must be registered and enrolled before any queries or transactions can be invoked
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               uid:
+ *                 type: string
+ *               owner:
+ *                 type: string
+ *  			registeredDate:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
 app.post('/register', awaitHandler(async (req, res) => {
 	logger.info('================ POST on register');
 	var args = req.body;
@@ -162,6 +188,7 @@ app.post('/register', awaitHandler(async (req, res) => {
 // 
 //get query
 // querycontent
+
 app.get('/query', awaitHandler(async (req, res) => {
 //app.get('querycontent', awaitHandler(async (req, res) => {
 	logger.info('================ GET on querycontent  to mtube BC');
