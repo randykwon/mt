@@ -20,8 +20,8 @@ LOCALCA=/home/ec2-user/managedblockchain-tls-chain.pem
 
 #copy the connection profiles
 mkdir -p $REPODIR/tmp/connection-profile/mdist
-cp $REPODIR/mt-rest-api/connection-profile/mt-connection-profile-template.yaml $REPODIR/tmp/connection-profile/mt-connection-profile.yaml
-cp $REPODIR/mt-rest-api/connection-profile/client-mdist.yaml $REPODIR/tmp/connection-profile/mdist
+cp $REPODIR/rest-api/connection-profile/mt-connection-profile-template.yaml $REPODIR/tmp/connection-profile/mt-connection-profile.yaml
+cp $REPODIR/rest-api/connection-profile/client-mdist.yaml $REPODIR/tmp/connection-profile/mdist
 
 #update the connection profiles with endpoints and other information
 sed -i "s|%PEERNODEID%|$PEERNODEID|g" $REPODIR/tmp/connection-profile/mt-connection-profile.yaml
