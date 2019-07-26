@@ -13,18 +13,17 @@
 # permissions and limitations under the License.
 #
 */
-
 'use strict';
 var log4js = require('log4js');
 log4js.configure({
-	appenders: {
-	  out: { type: 'stdout' },
-	},
-	categories: {
-	  default: { appenders: ['out'], level: 'info' },
-	}
+  appenders: {
+    out: { type: 'stdout' },
+  },
+  categories: {
+    default: { appenders: ['out'], level: 'info' },
+  }
 });
-var logger = log4js.getLogger('MTAPI');
+var logger = log4js.getLogger('BEER-API');
 const WebSocketServer = require('ws');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -37,7 +36,7 @@ const options = {
   definition: {
     openapi: '3.0.0', // Specification (optional, defaults to swagger: '2.0')
     info: {
-      title: 'mtube API', // Title (required)
+      title: 'Beer Supplychain API', // Title (required)
       version: '1.0.0', // Version (required)
     },
   },
@@ -56,17 +55,13 @@ var invoke = require('./invoke.js');
 var blockListener = require('./blocklistener.js');
 
 hfc.addConfigFile('config.json');
-var host = 'localhost';
+var host = '0.0.0.0';
 var port = 3000;
-var username = "";
-var orgName = "";
 var channelName = hfc.getConfigSetting('channelName');
 var chaincodeName = hfc.getConfigSetting('chaincodeName');
-// echo $PEER
-// nd-wdbip5kkffdajdzxliak6rsha4.m-xc2ndal5yrgjbhewevgvgtimji.n-3gx7n35uzrcufli4opmo5alki4.managedblockchain.us-east-1.amazonaws.com:30003
 var peers = hfc.getConfigSetting('peers');
 ///////////////////////////////////////////////////////////////////////////////
-//////////////////////////////// SET CONFIGURATIONS ///////////////////////////
+//////////////////////////////// SET CONFIGURATONS ////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 app.options('*', cors());
 app.use(cors());
@@ -94,12 +89,11 @@ const awaitHandler = (fn) => {
 	}
 }
 
-
 app.get('/api-docs.json', (req, res) => {
-	res.setHeader('Content-Type', 'application/json');
-	res.send(swaggerSpec);
-  });
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// START SERVER /////////////////////////////////
@@ -133,11 +127,6 @@ wss.on('connection', function connection(ws) {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////// REST ENDPOINTS START HERE ///////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-// Health check - can be called by load balancer to check health of REST API
-app.get('/health', awaitHandler(async (req, res) => {
-	res.sendStatus(200);
-}));
-
 //
 //
 // POST register
@@ -224,6 +213,7 @@ app.get('/query', awaitHandler(async (req, res) => {
     let message = await query.queryChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
 	res.send(message);
 }));
+
 
 
 /**
