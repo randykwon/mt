@@ -62,6 +62,8 @@ var username = "admin1";
 var orgName = "Password123";
 var channelName = hfc.getConfigSetting('channelName');
 var chaincodeName = hfc.getConfigSetting('chaincodeName');
+// echo $PEER
+// nd-wdbip5kkffdajdzxliak6rsha4.m-xc2ndal5yrgjbhewevgvgtimji.n-3gx7n35uzrcufli4opmo5alki4.managedblockchain.us-east-1.amazonaws.com:30003
 var peers = hfc.getConfigSetting('peers');
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// SET CONFIGURATIONS ///////////////////////////
@@ -154,21 +156,30 @@ app.post('/register', awaitHandler(async (req, res) => {
 
 	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
 	res.send(message);
+
 }));
 
-//
-//
-app.post('querycontent', awaitHandler(async (req, res) => {
-	logger.info('================ POST on register content to mtube BC');
-	uid = req.body.uid;
-	owner = req.body.owner;
-	registeredDate = req.body.registeredDate;
+// 
+//get query
+// querycontent
+app.get('/query', awaitHandler(async (req, res) => {
+//app.get('querycontent', awaitHandler(async (req, res) => {
+	logger.info('================ GET on querycontent  to mtube BC');
+
+	let args = req.params;
+	let fcn = "querycontent";
+
+
 	logger.info('##### End point : /users');
 	logger.info('##### POST on UID- uid : ' + uid);
 	logger.info('##### POST owner - owner  : ' + owner);
 	logger.info('##### POST registeredDate - registeredDate  : ' + registeredDate);
-	
-}))
+
+    let message = await query.queryChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	res.send(message);
+}));
+
+
 // Register and enroll user. A user must be registered and enrolled before any queries 
 // or transactions can be invoked
 app.post('/users', awaitHandler(async (req, res) => {
