@@ -137,7 +137,7 @@ wss.on('connection', function connection(ws) {
  *   post:
  *     summary: add new Content 
  *     tags:
- *       - Add
+ *       - Creator
  *     description: Add new Content.
  *     parameters:
  *     - name: X-username
@@ -197,11 +197,21 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *   get:
  *     summary: querycontent
  *     tags:
- *       - Order
+ *       - Creator
  *     description: Returns querycontent 
  *     parameters:
- *     - name: uid
+  *     - name: X-username
  *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: uid
+ *       in: body
  *       required: true
  *       schema:
  *         type: string
@@ -211,22 +221,30 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *       200:
  *         description: list of orders
  */
-
 app.get('/query', awaitHandler(async (req, res) => {
 //app.get('querycontent', awaitHandler(async (req, res) => {
 	logger.info('================ GET on querycontent  to mtube BC');
 
-	let args = req.params;
+	//let args = [];
+	var args = req.body.args;
+	//req.params;
 	let fcn = "querycontent";
-
+	uid = req.body.get("uid");
+	var str = "uid";
+	args.params.push(uid);
+	
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+	//args.push("uid" + body["State"]);
+	//args.push(body["Count"]);
+	//args.push(body["Owner"]);
 
 	logger.info('##### End point : /users');
 	logger.info('##### POST on UID- uid : ' + uid);
-	logger.info('##### POST owner - owner  : ' + owner);
+	//logger.info('##### POST owner - owner  : ' + owner);
 	logger.info('##### POST registeredDate - registeredDate  : ' + registeredDate);
 
-	username = "randy";
-	orgName = "mdist";
+
 
     let message = await query.queryChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
 	res.send(message);
@@ -262,6 +280,7 @@ app.post('/users', awaitHandler(async (req, res) => {
 	logger.info('================ POST on Users');
 	let username = req.body.username;
 	let orgName = req.body.orgName;
+	
 	logger.info('##### End point : /users');
 	logger.info('##### POST on Users - username : ' + username);
 	logger.info('##### POST on Users - userorg  : ' + orgName);
