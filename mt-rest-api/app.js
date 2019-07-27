@@ -190,17 +190,17 @@ app.post('/addContent', awaitHandler(async (req, res) => {
 // 
 //get query
 // querycontent
-/**
+ /**
  * @swagger
- *
- * /query:
+ * /query/{uid}:
  *   get:
- *     summary: querycontent
  *     tags:
  *       - Creator
  *     description: Returns querycontent 
+ *     produces:
+ *       - application/json
  *     parameters:
-  *     - name: X-username
+ *     - name: X-username
  *       in: header
  *       required: true
  *       schema:
@@ -211,27 +211,25 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *       schema:
  *         type: string
  *     - name: uid
- *       in: body
- *       required: true
- *       schema:
+ *         description: uid
+ *         in: path
+ *         required: true
  *         type: string
- *     produces:
- *       - application/json
  *     responses:
  *       200:
- *         description: list of orders
+ *         description: A single content
  */
 app.get('/query', awaitHandler(async (req, res) => {
 //app.get('querycontent', awaitHandler(async (req, res) => {
 	logger.info('================ GET on querycontent  to mtube BC');
 
 	//let args = [];
-	var args = req.body.args;
+	var args = req.pa;
 	//req.params;
 	let fcn = "querycontent";
-	uid = req.body.get("uid");
-	var str = "uid";
-	args.params.push(uid);
+	//uid = req.body.get("uid");
+	//var str = "uid";
+	//args.params.push(uid);
 	
 	let username = req.header("X-username");
 	let orgName = req.header("X-orgName");
@@ -239,10 +237,10 @@ app.get('/query', awaitHandler(async (req, res) => {
 	//args.push(body["Count"]);
 	//args.push(body["Owner"]);
 
-	logger.info('##### End point : /users');
-	logger.info('##### POST on UID- uid : ' + uid);
+	logger.info('##### End point : /query');
+	//logger.info('##### POST on UID- uid : ' + uid);
 	//logger.info('##### POST owner - owner  : ' + owner);
-	logger.info('##### POST registeredDate - registeredDate  : ' + registeredDate);
+	//logger.info('##### POST registeredDate - registeredDate  : ' + registeredDate);
 
 
 
