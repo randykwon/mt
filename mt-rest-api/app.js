@@ -129,7 +129,7 @@ wss.on('connection', function connection(ws) {
 ///////////////////////////////////////////////////////////////////////////////
 //
 //
-// POST register
+// POST addContent
  /**
  * @swagger
  *
@@ -160,6 +160,7 @@ wss.on('connection', function connection(ws) {
  *               uid:
  *                 type: string
  *               owner:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Execution result
