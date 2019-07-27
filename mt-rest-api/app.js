@@ -24,7 +24,6 @@ log4js.configure({
   }
 });
 var logger = log4js.getLogger('mt-API');
-logger.setLevel('DEBUG');
 const WebSocketServer = require('ws');
 var express = require('express');
 var bodyParser = require('body-parser');
