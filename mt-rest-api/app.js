@@ -23,7 +23,8 @@ log4js.configure({
     default: { appenders: ['out'], level: 'info' },
   }
 });
-var logger = log4js.getLogger('BEER-API');
+var logger = log4js.getLogger('mt-API');
+logger.setLevel('DEBUG');
 const WebSocketServer = require('ws');
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -130,15 +131,26 @@ wss.on('connection', function connection(ws) {
 //
 //
 // POST register
-/**
+ /**
  * @swagger
  *
- * /register:
+ * /addContent:
  *   post:
- *     summary: Register Contents.
+ *     summary: add new Content 
  *     tags:
- *       - register
- *     description: A user must be registered and enrolled before any queries or transactions can be invoked
+ *       - Add
+ *     description: Add new Content.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -149,23 +161,26 @@ wss.on('connection', function connection(ws) {
  *               uid:
  *                 type: string
  *               owner:
- *                 type: string
  *     responses:
  *       200:
  *         description: Execution result
  */
-app.post('/register', awaitHandler(async (req, res) => {
+app.post('/addContent', awaitHandler(async (req, res) => {
 	logger.info('================ POST on register');
 	var args = req.body;
 	var fcn = "register";
 
-    logger.info('##### POST on register - username : ' + username);
-	logger.info('##### POST on register - userOrg : ' + orgName);
-	logger.info('##### POST on register - channelName : ' + channelName);
-	logger.info('##### POST on register - chaincodeName : ' + chaincodeName);
-	logger.info('##### POST on register - fcn : ' + fcn);
-	logger.info('##### POST on register - args : ' + JSON.stringify(args));
-	logger.info('##### POST on register - peers : ' + peers);
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+
+    logger.info('##### POST on addContent - username : ' + username);
+	logger.info('##### POST on addContent - userOrg : ' + orgName);
+	logger.info('##### POST on addContent - channelName : ' + channelName);
+	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on addContent - fcn : ' + fcn);
+	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+	logger.info('##### POST on addContent - peers : ' + peers);
+	
 
 	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
 	res.send(message);
@@ -209,6 +224,9 @@ app.get('/query', awaitHandler(async (req, res) => {
 	logger.info('##### POST on UID- uid : ' + uid);
 	logger.info('##### POST owner - owner  : ' + owner);
 	logger.info('##### POST registeredDate - registeredDate  : ' + registeredDate);
+
+	username = "randy";
+	orgName = "mdist";
 
     let message = await query.queryChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
 	res.send(message);
