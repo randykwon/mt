@@ -190,15 +190,16 @@ app.post('/addContent', awaitHandler(async (req, res) => {
 // 
 //get query
 // querycontent
- /**
+//
+
+/**
  * @swagger
+ *
  * /query/{uid}:
  *   get:
+ *     summary: Find order by KEY 
  *     tags:
- *       - Creator
- *     description: Returns querycontent 
- *     produces:
- *       - application/json
+ *     - Contents
  *     parameters:
  *     - name: X-username
  *       in: header
@@ -211,13 +212,14 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *       schema:
  *         type: string
  *     - name: uid
- *         description: uid
- *         in: path
- *         required: true
+ *       in: path
+ *       required: true
+ *       description: Get a specific order by KEY
+ *       schema:
  *         type: string
  *     responses:
  *       200:
- *         description: A single content
+ *         description: order information
  */
 app.get('/query', awaitHandler(async (req, res) => {
 //app.get('querycontent', awaitHandler(async (req, res) => {
