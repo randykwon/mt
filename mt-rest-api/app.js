@@ -133,7 +133,7 @@ wss.on('connection', function connection(ws) {
  /**
  * @swagger
  *
- * /addContent123:
+ * /addContent:
  *   post:
  *     summary: add new Content 
  *     tags:
@@ -167,7 +167,7 @@ wss.on('connection', function connection(ws) {
  *       200:
  *         description: Execution result
  */
-app.post('/addConten123', awaitHandler(async (req, res) => {
+app.post('/addConten', awaitHandler(async (req, res) => {
 	logger.info('================ POST on register');
 	var args = req.body;
 	var fcn = "addContent";
@@ -192,7 +192,7 @@ app.post('/addConten123', awaitHandler(async (req, res) => {
 /**
  * @swagger
  *
- * /addContent:
+ * /addCo:
  *   post:
  *     summary: Create a new order
  *     tags:
@@ -228,7 +228,7 @@ app.post('/addConten123', awaitHandler(async (req, res) => {
  *       200:
  *         description: Execution result
  */
-app.post('/addContent', awaitHandler(async (req, res) => {
+app.post('/addCo', awaitHandler(async (req, res) => {
     logger.info('================ POST on addContent');
     var body = req.body;
     var fcn = "createOrder";
