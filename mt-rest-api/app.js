@@ -133,7 +133,7 @@ wss.on('connection', function connection(ws) {
  /**
  * @swagger
  *
- * /addContent:
+ * /addContent123:
  *   post:
  *     summary: add new Content 
  *     tags:
@@ -167,7 +167,7 @@ wss.on('connection', function connection(ws) {
  *       200:
  *         description: Execution result
  */
-app.post('/addContent', awaitHandler(async (req, res) => {
+app.post('/addConten123', awaitHandler(async (req, res) => {
 	logger.info('================ POST on register');
 	var args = req.body;
 	var fcn = "addContent";
@@ -189,7 +189,62 @@ app.post('/addContent', awaitHandler(async (req, res) => {
 
 }));
 
+/**
+ * @swagger
+ *
+ * /addContent:
+ *   post:
+ *     summary: Create a new order
+ *     tags:
+ *       - Order
+ *     description: Create a new beer purchase order
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               Key:
+ *                 type: string
+ *               State:
+ *                 type: string
+ *               Count:
+ *                 type: string
+ *               Owner:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
+app.post('/addContent', awaitHandler(async (req, res) => {
+    logger.info('================ POST on addContent');
+    var body = req.body;
+    var fcn = "createOrder";
+	logger.info(body);
+	var args = [];
+	args.push(body["Key"])
+	args.push(body["State"]);
+	args.push(body["Count"]);
+	args.push(body["Owner"]);
+	
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
 
+    let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+    res.send(message);
+}));
 // 
 //get query
 // querycontent
