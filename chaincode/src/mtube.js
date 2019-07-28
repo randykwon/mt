@@ -454,6 +454,37 @@ let Chaincode = class {
    * 
    ************************************************************************************************/
 
+   /**
+   * Creates a new donor
+   * 
+   * @param {*} stub 
+   * @param {*} args - JSON as follows:
+   * {
+   *    "donorUserName":"edge",
+   *    "email":"edge@abc.com",
+   *    "registeredDate":"2018-10-22T11:52:20.182Z"
+   * }
+   */
+  async addContent(stub, args) {
+    console.log('============= START : addContent ===========');
+    console.log('##### addContent arguments: ' + JSON.stringify(args));
+
+    // args is passed as a JSON string
+    let json = JSON.parse(args);
+    let key = 'donor' + json['donorUserName'];
+    json['docType'] = 'donor';
+
+    console.log('##### addContent payload: ' + JSON.stringify(json));
+
+    // Check if the donor already exists
+    let donorQuery = await stub.getState(key);
+    if (donorQuery.toString()) {
+      throw new Error('##### addContent - This donor already exists: ' + json['donorUserName']);
+    }
+
+    await stub.putState(key, Buffer.from(JSON.stringify(json)));
+    console.log('============= END : addContent ===========');
+  }
 
   /**
    * register content
@@ -494,6 +525,23 @@ let Chaincode = class {
     console.log('============= END : register ===========');
   
   }
+
+  /**
+ * querycontent()
+ * @param {*} stub 
+ * @param {*} args 
+ */
+async queryContent(stub, args) {
+  console.log('============= START : queryContent ===========');
+  console.log('##### queryContent arguments: ' + JSON.stringify(args));
+
+  // args is passed as a JSON string
+  let json = JSON.parse(args);
+  let key = 'uid' + json['uid'];
+  console.log('##### queryContent key: ' + key);
+
+  return queryByKey(stub, key);
+}
 
   /**
    * provisioning
@@ -606,22 +654,7 @@ let Chaincode = class {
 
   }
 
-/**
- * querycontent()
- * @param {*} stub 
- * @param {*} args 
- */
-async queryContent(stub, args) {
-  console.log('============= START : queryContent ===========');
-  console.log('##### queryContent arguments: ' + JSON.stringify(args));
 
-  // args is passed as a JSON string
-  let json = JSON.parse(args);
-  let key = 'uid' + json['uid'];
-  console.log('##### queryContent key: ' + key);
-
-  return queryByKey(stub, key);
-}
 
 /**
  * queryContentByCreators()

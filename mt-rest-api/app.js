@@ -157,9 +157,11 @@ wss.on('connection', function connection(ws) {
  *           schema:
  *             type: object
  *             properties:
- *               uid:
+ *               donorUserName:
  *                 type: string
- *               owner:
+ *               email:
+ *                 type: string
+ *               registeredDate:
  *                 type: string
  *     responses:
  *       200:
@@ -168,7 +170,7 @@ wss.on('connection', function connection(ws) {
 app.post('/addContent', awaitHandler(async (req, res) => {
 	logger.info('================ POST on register');
 	var args = req.body;
-	var fcn = "register";
+	var fcn = "addContent";
 
 	let username = req.header("X-username");
 	let orgName = req.header("X-orgName");
@@ -186,6 +188,7 @@ app.post('/addContent', awaitHandler(async (req, res) => {
 	res.send(message);
 
 }));
+
 
 // 
 //get query
@@ -221,15 +224,24 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *       200:
  *         description: order information
  */
-app.get('/query', awaitHandler(async (req, res) => {
-//app.get('querycontent', awaitHandler(async (req, res) => {
-	logger.info('================ GET on querycontent  to mtube BC');
+app.get('/query/:uid', awaitHandler(async (req, res) => {
 
-	//let args = [];
-	var args = req.pa;
+	logger.info('=== GET on querycontent  to mtube BC');
+
+
+	let nubmer_uid = req.params.uid;
+	logger.info('uid: ' + number_uid);
+
+	let data = {
+        uid: number_uid
+    }
+	var args = JSON.stringify(data);
+	
+
 	//req.params;
 	let fcn = "querycontent";
-	//uid = req.body.get("uid");
+	uid = req.params;
+
 	//var str = "uid";
 	//args.params.push(uid);
 	
