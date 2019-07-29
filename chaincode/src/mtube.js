@@ -471,14 +471,14 @@ let Chaincode = class {
 
     // args is passed as a JSON string
     let json = JSON.parse(args);
-    let key = 'donor' + json['donorUserName'];
-    json['docType'] = 'donor';
+    let key = 'userID' + json['userID'];
+    json['docType'] = 'content';
 
     console.log('##### addContent payload: ' + JSON.stringify(json));
 
     // Check if the donor already exists
-    let donorQuery = await stub.getState(key);
-    if (donorQuery.toString()) {
+    let addQuery = await stub.getState(key);
+    if (addQuery.toString()) {
       throw new Error('##### addContent - This donor already exists: ' + json['donorUserName']);
     }
 
@@ -557,13 +557,17 @@ async queryContent(stub, args) {
    * 
    * 
    */
-  async provisioning(stub, args) {
-    console.log('============= START : provisioning ===========');
-    console.log('##### provisioning arguments: ' + JSON.stringify(args));
+  async production(stub, args) {
+    console.log('============= START : production ===========');
+    console.log('##### production arguments: ' + args.toString());
  //
     // args is passed as a JSON string
-    let json = JSON.parse(args);
-    let key = 'uid' + json['uid'];
+ 
+    let key = args[0];
+    let key = args[1];
+    let key = args[2];
+    let key = args[3];
+
     let uid = 'uid'
     json['docType'] = 'distributor';
 

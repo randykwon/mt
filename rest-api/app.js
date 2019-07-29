@@ -137,7 +137,70 @@ wss.on('connection', function connection(ws) {
 app.get('/health', awaitHandler(async (req, res) => {
 	res.sendStatus(200);
 }));
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////// REST ENDPOINTS START HERE ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//
+//
+// POST addContent
+ /**
+ * @swagger
+ *
+ * /addContent:
+ *   post:
+ *     summary: add new Content 
+ *     tags:
+ *       - Creator
+ *     description: Add new Content.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userID:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               registeredDate:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
+app.post('/addContent', awaitHandler(async (req, res) => {
+	logger.info('================ POST on register');
+	var args = req.body;
+	var fcn = "addContent";
 
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+
+    logger.info('##### POST on addContent - username : ' + username);
+	logger.info('##### POST on addContent - userOrg : ' + orgName);
+	logger.info('##### POST on addContent - channelName : ' + channelName);
+	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on addContent - fcn : ' + fcn);
+	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+	logger.info('##### POST on addContent - peers : ' + peers);
+	
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	res.send(message);
+
+}));
 //
 //
 // POST register
