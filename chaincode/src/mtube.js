@@ -471,7 +471,7 @@ let Chaincode = class {
 
     // args is passed as a JSON string
     let json = JSON.parse(args);
-    let key = 'userID' + json['userID'];
+    let key = 'uniqID' + json['uniqID'];
     json['docType'] = 'content';
 
     console.log('##### addContent payload: ' + JSON.stringify(json));
@@ -497,7 +497,8 @@ async queryContent(stub, args) {
 
   // args is passed as a JSON string
   let json = JSON.parse(args);
-  let key = 'userID' + json['userID'];
+  let key = 'uniqID' + json.replace('"','').replace('"','');
+  //json['userID'];
   console.log('##### queryContent key: ' + key);
 
   return queryByKey(stub, key);

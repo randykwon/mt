@@ -146,7 +146,7 @@ app.get('/health', awaitHandler(async (req, res) => {
  /**
  * @swagger
  *
- * /addContent:
+ * /content:
  *   post:
  *     summary: add new Content 
  *     tags:
@@ -170,18 +170,18 @@ app.get('/health', awaitHandler(async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               userID:
+ *               uniqID:
  *                 type: string
  *               email:
  *                 type: string
- *               registeredDate:
+ *               metaInfo:
  *                 type: string
  *     responses:
  *       200:
  *         description: Execution result
  */
-app.post('/addContent', awaitHandler(async (req, res) => {
-	logger.info('================ POST on register');
+app.post('/content', awaitHandler(async (req, res) => {
+	logger.info('================ POST on content (add content)');
 	var args = req.body;
 	var fcn = "addContent";
 
@@ -208,7 +208,8 @@ app.post('/addContent', awaitHandler(async (req, res) => {
 /**
  * @swagger
  *
- * /queryContent:
+ * /content/{uniqID}:
+ * uniqID}:
  *   get:
  *     summary: queryContent
  *     tags:
@@ -224,10 +225,10 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *       required: true
  *       schema:
  *         type: string
- *     - name: userID
+ *     - name: uniqID
  *       in: path
  *       required: true
- *       description: Get a specific order by KEY
+ *       description: Get a specific Content by uniqID
  *       schema:
  *         type: string
  *     responses:
@@ -235,15 +236,17 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *         description: Execution result
  */
 
-app.get('/queryContent:Key', awaitHandler(async (req, res) => {
+app.get('/content/:uniqID', awaitHandler(async (req, res) => {
 	//app.get('querycontent', awaitHandler(async (req, res) => {
-		logger.info('================ GET on queryContent ');
-		logger.info('userID : ' + req.params.userID);
-		let args = [req.params.userID];
+		logger.info('================ GET on content by uniqID ');
+		logger.info('uniqID : ' + req.params.uniqID);
+		//let args = [];
+		args = req.params.uniqID;
 		
 		let fcn = "queryContent";
-	
-		logger.info('=====' + JSON.stringify(args));
+		let username = req.header("X-username");
+		let orgName = req.header("X-orgName");
+		logger.info('=====' + args);
 	
 		logger.info('##### End point : /queryContent');
 		logger.info('##### POST on addContent - username : ' + username);
@@ -251,14 +254,74 @@ app.get('/queryContent:Key', awaitHandler(async (req, res) => {
 		logger.info('##### POST on addContent - channelName : ' + channelName);
 		logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
 		logger.info('##### POST on addContent - fcn : ' + fcn);
-		logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+		logger.info('##### POST on addContent - args : ' + args);
 		logger.info('##### POST on addContent - peers : ' + peers);
 	
 		let message = await query.queryChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
 		res.send(message);
 	}));
 
+//
+//
+// POST production
+ /**
+ * @swagger
+ *
+ * /production:
+ *   post:
+ *     summary: add new production 
+ *     tags:
+ *       - Creator
+ *     description: Add new production.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               uniqID:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               registeredDate:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
+app.post('/production', awaitHandler(async (req, res) => {
+	logger.info('================ POST on content (add content)');
+	var args = req.body;
+	var fcn = "production";
 
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+
+    logger.info('##### POST on addContent - username : ' + username);
+	logger.info('##### POST on addContent - userOrg : ' + orgName);
+	logger.info('##### POST on addContent - channelName : ' + channelName);
+	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on addContent - fcn : ' + fcn);
+	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+	logger.info('##### POST on addContent - peers : ' + peers);
+	
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	res.send(message);
+
+}));
 
 //
 //
