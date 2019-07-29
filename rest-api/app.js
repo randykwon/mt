@@ -213,7 +213,6 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *     summary: queryContent
  *     tags:
  *       - Creator
- *     description: Add new Content.
  *     parameters:
  *     - name: X-username
  *       in: header
@@ -225,28 +224,26 @@ app.post('/addContent', awaitHandler(async (req, res) => {
  *       required: true
  *       schema:
  *         type: string
- *     requestBody:
+ *     - name: userID
+ *       in: path
  *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               userID:
- *                 type: string
+ *       description: Get a specific order by KEY
+ *       schema:
+ *         type: string
  *     responses:
  *       200:
  *         description: Execution result
  */
 
-app.get('/queryContent', awaitHandler(async (req, res) => {
+app.get('/queryContent:Key', awaitHandler(async (req, res) => {
 	//app.get('querycontent', awaitHandler(async (req, res) => {
 		logger.info('================ GET on queryContent ');
-	
-		let args = req.params;
+		logger.info('userID : ' + req.params.userID);
+		let args = [req.params.userID];
+		
 		let fcn = "queryContent";
 	
-		loggger.info('=====' + JSON.stringify(args));
+		logger.info('=====' + JSON.stringify(args));
 	
 		logger.info('##### End point : /queryContent');
 		logger.info('##### POST on addContent - username : ' + username);
