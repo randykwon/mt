@@ -142,7 +142,8 @@ app.get('/health', awaitHandler(async (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////
 //
 //
-// POST addContent
+// POST addContent by mCreator
+//
  /**
  * @swagger
  *
@@ -263,7 +264,9 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
 
 //
 //
-// POST production
+// POST production by mDistrituber
+//
+//
  /**
  * @swagger
  *
@@ -271,7 +274,7 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
  *   post:
  *     summary: add new production 
  *     tags:
- *       - Creator
+ *       - Distributor
  *     description: Add new production.
  *     parameters:
  *     - name: X-username
@@ -302,7 +305,7 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
  *         description: Execution result
  */
 app.post('/production', awaitHandler(async (req, res) => {
-	logger.info('================ POST on content (add content)');
+	logger.info('================ POST on production');
 	var args = req.body;
 	var fcn = "production";
 
@@ -325,16 +328,29 @@ app.post('/production', awaitHandler(async (req, res) => {
 
 //
 //
-// POST register
-/**
+// POST request to use by mSeller
+//
+//
+ /**
  * @swagger
  *
- * /register:
+ * /use:
  *   post:
- *     summary: Register Contents.
+ *     summary: request  use 
  *     tags:
- *       - register
- *     description: A user must be registered and enrolled before any queries or transactions can be invoked
+ *       - Seller
+ *     description: Add  use.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -342,26 +358,32 @@ app.post('/production', awaitHandler(async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               uid:
+ *               uniqID:
  *                 type: string
- *               owner:
+ *               email:
+ *                 type: string
+ *               registeredDate:
  *                 type: string
  *     responses:
  *       200:
  *         description: Execution result
  */
-app.post('/register', awaitHandler(async (req, res) => {
-	logger.info('================ POST on register');
+app.post('/use', awaitHandler(async (req, res) => {
+	logger.info('================ POST on use (reqeust to use)');
 	var args = req.body;
-	var fcn = "register";
+	var fcn = "use";
 
-    logger.info('##### POST on register - username : ' + username);
-	logger.info('##### POST on register - userOrg : ' + orgName);
-	logger.info('##### POST on register - channelName : ' + channelName);
-	logger.info('##### POST on register - chaincodeName : ' + chaincodeName);
-	logger.info('##### POST on register - fcn : ' + fcn);
-	logger.info('##### POST on register - args : ' + JSON.stringify(args));
-	logger.info('##### POST on register - peers : ' + peers);
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+
+    logger.info('##### POST on addContent - username : ' + username);
+	logger.info('##### POST on addContent - userOrg : ' + orgName);
+	logger.info('##### POST on addContent - channelName : ' + channelName);
+	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on addContent - fcn : ' + fcn);
+	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+	logger.info('##### POST on addContent - peers : ' + peers);
+	
 
 	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
 	res.send(message);
@@ -369,6 +391,203 @@ app.post('/register', awaitHandler(async (req, res) => {
 }));
 
 
+//
+//
+// POST request to allow by mDistributor
+//
+//
+ /**
+ * @swagger
+ *
+ * /allow:
+ *   post:
+ *     summary: add allow 
+ *     tags:
+ *       - Creator
+ *     description: Add allow.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               uniqID:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               registeredDate:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
+app.post('/allow', awaitHandler(async (req, res) => {
+	logger.info('================ POST on use (reqeust to use)');
+	var args = req.body;
+	var fcn = "allow";
+
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+
+    logger.info('##### POST on addContent - username : ' + username);
+	logger.info('##### POST on addContent - userOrg : ' + orgName);
+	logger.info('##### POST on addContent - channelName : ' + channelName);
+	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on addContent - fcn : ' + fcn);
+	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+	logger.info('##### POST on addContent - peers : ' + peers);
+	
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	res.send(message);
+
+}));
+
+
+//
+//
+// POST request to count by mDistributor
+//
+//
+ /**
+ * @swagger
+ *
+ * /count:
+ *   post:
+ *     summary: add count 
+ *     tags:
+ *       - Creator
+ *     description: Add count.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               uniqID:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               registeredDate:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
+app.post('/count', awaitHandler(async (req, res) => {
+	logger.info('================ POST on count (count)');
+	var args = req.body;
+	var fcn = "count";
+
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+
+    logger.info('##### POST on addContent - username : ' + username);
+	logger.info('##### POST on addContent - userOrg : ' + orgName);
+	logger.info('##### POST on addContent - channelName : ' + channelName);
+	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on addContent - fcn : ' + fcn);
+	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+	logger.info('##### POST on addContent - peers : ' + peers);
+	
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	res.send(message);
+
+}));
+
+//
+//
+// POST request to check by mDistributor
+//
+//
+ /**
+ * @swagger
+ *
+ * /check:
+ *   post:
+ *     summary: add check 
+ *     tags:
+ *       - Creator
+ *     description: Add check.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               uniqID:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               registeredDate:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
+app.post('/check', awaitHandler(async (req, res) => {
+	logger.info('================ POST on check (check)');
+	var args = req.body;
+	var fcn = "check";
+
+	let username = req.header("X-username");
+	let orgName = req.header("X-orgName");
+
+    logger.info('##### POST on addContent - username : ' + username);
+	logger.info('##### POST on addContent - userOrg : ' + orgName);
+	logger.info('##### POST on addContent - channelName : ' + channelName);
+	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on addContent - fcn : ' + fcn);
+	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+	logger.info('##### POST on addContent - peers : ' + peers);
+	
+
+	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	res.send(message);
+
+}));
+
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////// REST ENDPOINTS END HERE ///////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 
 /**
