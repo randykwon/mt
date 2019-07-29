@@ -201,6 +201,68 @@ app.post('/addContent', awaitHandler(async (req, res) => {
 	res.send(message);
 
 }));
+
+// 
+//get query
+// querycontent
+/**
+ * @swagger
+ *
+ * /queryContent:
+ *   get:
+ *     summary: queryContent
+ *     tags:
+ *       - Creator
+ *     description: Add new Content.
+ *     parameters:
+ *     - name: X-username
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     - name: X-orgName
+ *       in: header
+ *       required: true
+ *       schema:
+ *         type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               userID:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Execution result
+ */
+
+app.get('/queryContent', awaitHandler(async (req, res) => {
+	//app.get('querycontent', awaitHandler(async (req, res) => {
+		logger.info('================ GET on queryContent ');
+	
+		let args = req.params;
+		let fcn = "queryContent";
+	
+		loggger.info('=====' + JSON.stringify(args));
+	
+		logger.info('##### End point : /queryContent');
+		logger.info('##### POST on addContent - username : ' + username);
+		logger.info('##### POST on addContent - userOrg : ' + orgName);
+		logger.info('##### POST on addContent - channelName : ' + channelName);
+		logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
+		logger.info('##### POST on addContent - fcn : ' + fcn);
+		logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
+		logger.info('##### POST on addContent - peers : ' + peers);
+	
+		let message = await query.queryChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+		res.send(message);
+	}));
+
+
+
 //
 //
 // POST register
@@ -246,47 +308,7 @@ app.post('/register', awaitHandler(async (req, res) => {
 
 }));
 
-// 
-//get query
-// querycontent
-/**
- * @swagger
- *
- * /query:
- *   get:
- *     summary: querycontent
- *     tags:
- *       - Order
- *     description: Returns querycontent 
- *     parameters:
- *     - name: uid
- *       in: header
- *       required: true
- *       schema:
- *         type: string
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: list of orders
- */
 
-app.get('/query', awaitHandler(async (req, res) => {
-//app.get('querycontent', awaitHandler(async (req, res) => {
-	logger.info('================ GET on querycontent  to mtube BC');
-
-	let args = req.params;
-	let fcn = "querycontent";
-
-
-	logger.info('##### End point : /users');
-	logger.info('##### POST on UID- uid : ' + uid);
-	logger.info('##### POST owner - owner  : ' + owner);
-	logger.info('##### POST registeredDate - registeredDate  : ' + registeredDate);
-
-    let message = await query.queryChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
-	res.send(message);
-}));
 
 
 /**

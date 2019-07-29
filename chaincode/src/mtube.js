@@ -487,6 +487,23 @@ let Chaincode = class {
   }
 
   /**
+ * querycontent()
+ * @param {*} stub 
+ * @param {*} args 
+ */
+async queryContent(stub, args) {
+  console.log('============= START : queryContent ===========');
+  console.log('##### queryContent arguments: ' + JSON.stringify(args));
+
+  // args is passed as a JSON string
+  let json = JSON.parse(args);
+  let key = 'userID' + json['userID'];
+  console.log('##### queryContent key: ' + key);
+
+  return queryByKey(stub, key);
+}
+
+  /**
    * register content
    * @param {*} stub 
    * 
@@ -526,22 +543,6 @@ let Chaincode = class {
   
   }
 
-  /**
- * querycontent()
- * @param {*} stub 
- * @param {*} args 
- */
-async queryContent(stub, args) {
-  console.log('============= START : queryContent ===========');
-  console.log('##### queryContent arguments: ' + JSON.stringify(args));
-
-  // args is passed as a JSON string
-  let json = JSON.parse(args);
-  let key = 'uid' + json['uid'];
-  console.log('##### queryContent key: ' + key);
-
-  return queryByKey(stub, key);
-}
 
   /**
    * provisioning
