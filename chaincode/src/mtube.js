@@ -473,13 +473,14 @@ let Chaincode = class {
     let json = JSON.parse(args);
     let key = 'uniqID' + json['uniqID'];
     json['docType'] = 'content';
+    json['docStatus'] = 'register';
 
     console.log('##### addContent payload: ' + JSON.stringify(json));
 
     // Check if the donor already exists
     let addQuery = await stub.getState(key);
     if (addQuery.toString()) {
-      throw new Error('##### addContent - This donor already exists: ' + json['donorUserName']);
+      throw new Error('##### addContent -  already exists: ' + json['uniqID']);
     }
 
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
@@ -503,6 +504,211 @@ async queryContent(stub, args) {
 
   return queryByKey(stub, key);
 }
+
+  /**
+   * provisioning
+   * @param {*} stub 
+   * @param {*} args 
+   */
+  async production(stub, args) {
+    console.log('============= START : production ===========');
+    console.log('##### production arguments: ' + args.toString());
+
+    // args is passed as a JSON string
+    let json = JSON.parse(args);
+    let key = 'uniqID' + json['uniqID'];
+    json['docType'] = 'content';
+    json['docStatus'] = 'production';
+
+    console.log('##### addContent payload: ' + JSON.stringify(json));
+
+    // Check if the donor already exists
+    let addQuery = await stub.getState(key);
+    if (addQuery.toString()) {
+      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+    }
+
+    await stub.putState(key, Buffer.from(JSON.stringify(json)));
+    console.log('============= END : production ===========');
+  }
+
+  /**
+   * use
+   * @param {*} stub 
+   * @param {*} args 
+   * 
+   * { 
+   "uniqID": "000000001",
+   "sellerID": "dj pumpkins", 
+   * 
+   * 
+   */
+  async use(stub, args) {
+    console.log('============= START : use ===========');
+    console.log('##### use arguments: ' + JSON.stringify(args));
+
+    // args is passed as a JSON string
+    let json = JSON.parse(args);
+    let key = 'uniqID' + json['uniqID'];
+    json['docType'] = 'content';
+    json['docStatus'] = 'use';
+
+
+    console.log('##### addContent payload: ' + JSON.stringify(json));
+
+    // Check if the donor already exists
+    let addQuery = await stub.getState(key);
+    if (addQuery.toString()) {
+      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+    }
+
+    await stub.putState(key, Buffer.from(JSON.stringify(json)));
+    console.log('============= END : use ===========');
+  
+  
+  }
+ /**
+   * allow
+   * @param {*} stub 
+   * @param {*} args 
+   * 
+   * { 
+   "uniqID": "000000001",
+   "sellerID": "dj pumpkins", 
+   "expired": "20200909", }
+   */
+  async allow(stub, args) {
+    console.log('============= START : allow ===========');
+    console.log('##### allow arguments: ' + JSON.stringify(args));
+
+      // args is passed as a JSON string
+    let json = JSON.parse(args);
+    let key = 'uniqID' + json['uniqID'];
+    json['docType'] = 'content';
+    json['docStatus'] = 'allow';
+
+
+    console.log('##### addContent payload: ' + JSON.stringify(json));
+
+    // Check if the donor already exists
+    let addQuery = await stub.getState(key);
+    if (addQuery.toString()) {
+      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+    }
+
+    await stub.putState(key, Buffer.from(JSON.stringify(json)));
+    console.log('============= END : allow ===========');
+  }
+/**
+   * allow
+   * @param {*} stub 
+   * @param {*} args 
+   * 
+   * { 
+   "uniqID": "000000001",
+   "user": "1231231,", 
+   "date": "20191212",
+   "sellerID": "001010"
+}
+   */
+  async count(stub, args) {
+    console.log('============= START : count ===========');
+    console.log('##### count arguments: ' + JSON.stringify(args));
+
+      // args is passed as a JSON string
+    let json = JSON.parse(args);
+    let key = 'uniqID' + json['uniqID'];
+    json['docType'] = 'content';
+
+
+
+    console.log('##### addContent payload: ' + JSON.stringify(json));
+
+    // Check if the donor already exists
+    let addQuery = await stub.getState(key);
+    if (addQuery.toString()) {
+      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+    }
+
+    await stub.putState(key, Buffer.from(JSON.stringify(json)));
+    console.log('============= END : count ===========');
+  }
+/**
+   * allow
+   * @param {*} stub 
+   * @param {*} args 
+   * 
+   * { 
+   "uniqID": "000000001",
+   "user": "1231231,", 
+   "date": "20191212",
+   "distID": "001010"
+}
+   */
+  async check(stub, args) {
+    console.log('============= START : check ===========');
+    console.log('##### check arguments: ' + JSON.stringify(args));
+
+      // args is passed as a JSON string
+    let json = JSON.parse(args);
+    let key = 'uniqID' + json['uniqID'];
+    json['docType'] = 'content';
+
+
+
+    console.log('##### check payload: ' + JSON.stringify(json));
+
+    // Check if the donor already exists
+    let addQuery = await stub.getState(key);
+    if (addQuery.toString()) {
+      throw new Error('##### check - This  exists: ' + json['uniqID']);
+    }
+
+    await stub.putState(key, Buffer.from(JSON.stringify(json)));
+    console.log('============= END : count ===========');
+  }
+
+/**
+ * queryContentByCreators()
+ * @param {*} stub 
+ * @param {*} args 
+ */
+async queryContentByCreators(stub, args) {
+  
+  console.log('============= START : queryContentByOrg ===========');
+  console.log('##### queryContentByCreators arguments: ' + JSON.stringify(args));
+
+  let queryString = '{"selector": {"docType": "creators"}}';
+  return queryByString(stub, queryString);
+}
+/**
+ * queryContentByDistributor()
+ * @param {*} stub 
+ * @param {*} args 
+ */
+async queryContentByDistributor(stub, args) {
+  
+  console.log('============= START : queryContentByOrg ===========');
+  console.log('##### queryContentByDistributor arguments: ' + JSON.stringify(args));
+
+  let queryString = '{"selector": {"docType": "distributor"}}';
+  return queryByString(stub, queryString);
+}
+/**
+ * queryContentBySeller()
+ * @param {*} stub 
+ * @param {*} args 
+ */
+async queryContentBySeller(stub, args) {
+  
+  console.log('============= START : queryContentByOrg ===========');
+  console.log('##### queryContentBySeller arguments: ' + JSON.stringify(args));
+
+  let queryString = '{"selector": {"docType": "seller"}}';
+  return queryByString(stub, queryString);
+}
+
+
 
   /**
    * register content
@@ -544,163 +750,6 @@ async queryContent(stub, args) {
   
   }
 
-
-  /**
-   * provisioning
-   * @param {*} stub 
-   * @param {*} args 
-   * 
-   * { 
-   "uid": "000000001",
-   "owner": "dj pumpkins", 
-   "status" "product",
-   "number": "000000001"
-}
-   * 
-   * 
-   */
-  async production(stub, args) {
-    console.log('============= START : production ===========');
-    console.log('##### production arguments: ' + args.toString());
- //
-    // args is passed as a JSON string
- 
-    let key = args[0];
-    let key = args[1];
-    let key = args[2];
-    let key = args[3];
-
-    let uid = 'uid'
-    json['docType'] = 'distributor';
-
-    console.log('##### provisioning payload: ' + JSON.stringify(json));
-
-    // Check if the donor already exists
-    let keyQuery = await stub.getState(key);
-    if (keyQuery.toString()) {
-      throw new Error('##### provisioning - This uid already exists: ' + json['uid']);
-    }
-
-    await stub.putState(key, Buffer.from(JSON.stringify(json)));
-    console.log('============= END : provisioning ===========');
-  
-   
-  }
-
-  /**
-   * use
-   * @param {*} stub 
-   * @param {*} args 
-   * 
-   * { 
-   "uid": "000000001",
-   "owner": "dj pumpkins", 
-   "seller": "seller_a",
-   "status": "requestouse",
-   "number": "000000001"
-}
-   * 
-   * 
-   */
-  async use(stub, args) {
-    console.log('============= START : use ===========');
-    console.log('##### use arguments: ' + JSON.stringify(args));
-
-    //
-    // args is passed as a JSON string
-    let json = JSON.parse(args);
-    let key = 'uid' + json['uid'];
-    json['docType'] = 'seller';
-
-    console.log('##### provisioning payload: ' + JSON.stringify(json));
-
-    // Check if the donor already exists
-    let keyQuery = await stub.getState(key);
-    if (keyQuery.toString()) {
-      throw new Error('##### use - This uid already exists: ' + json['uid']);
-    }
-
-    await stub.putState(key, Buffer.from(JSON.stringify(json)));
-    console.log('============= END : use ===========');
-  
-  }
- /**
-   * allow
-   * @param {*} stub 
-   * @param {*} args 
-   * 
-   * { 
-   "uid": "000000001",
-   "owner": "dj pumpkins", 
-   "seller": "seller_a",
-   "status": "allow",
-   "number": "000000001"
-}
-   */
-  async allow(stub, args) {
-    console.log('============= START : allow ===========');
-    console.log('##### allow arguments: ' + JSON.stringify(args));
-
-     //
-    // args is passed as a JSON string
-    let json = JSON.parse(args);
-    let key = 'uid' + json['uid'];
-    json['docType'] = 'distributor';
-
-    console.log('##### allow payload: ' + JSON.stringify(json));
-
-    // Check if the donor already exists
-    let keyQuery = await stub.getState(key);
-    if (keyQuery.toString()) {
-      throw new Error('##### allow - This uid already exists: ' + json['uid']);
-    }
-
-    await stub.putState(key, Buffer.from(JSON.stringify(json)));
-    console.log('============= END : allow ===========');
-
-  }
-
-
-
-/**
- * queryContentByCreators()
- * @param {*} stub 
- * @param {*} args 
- */
-async queryContentByCreators(stub, args) {
-  
-  console.log('============= START : queryContentByOrg ===========');
-  console.log('##### queryContentByCreators arguments: ' + JSON.stringify(args));
-
-  let queryString = '{"selector": {"docType": "creators"}}';
-  return queryByString(stub, queryString);
-}
-/**
- * queryContentByDistributor()
- * @param {*} stub 
- * @param {*} args 
- */
-async queryContentByDistributor(stub, args) {
-  
-  console.log('============= START : queryContentByOrg ===========');
-  console.log('##### queryContentByDistributor arguments: ' + JSON.stringify(args));
-
-  let queryString = '{"selector": {"docType": "distributor"}}';
-  return queryByString(stub, queryString);
-}
-/**
- * queryContentBySeller()
- * @param {*} stub 
- * @param {*} args 
- */
-async queryContentBySeller(stub, args) {
-  
-  console.log('============= START : queryContentByOrg ===========');
-  console.log('##### queryContentBySeller arguments: ' + JSON.stringify(args));
-
-  let queryString = '{"selector": {"docType": "seller"}}';
-  return queryByString(stub, queryString);
-}
 
   /************************************************************************************************
    * 

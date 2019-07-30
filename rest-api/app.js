@@ -272,10 +272,10 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
  *
  * /production:
  *   post:
- *     summary: add new production 
+ *     summary: new production 
  *     tags:
  *       - Distributor
- *     description: Add new production.
+ *     description: new production.
  *     parameters:
  *     - name: X-username
  *       in: header
@@ -360,9 +360,9 @@ app.post('/production', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               email:
+ *               sellerID:
  *                 type: string
- *               registeredDate:
+ *               date:
  *                 type: string
  *     responses:
  *       200:
@@ -425,9 +425,9 @@ app.post('/use', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               email:
+ *               sellerID:
  *                 type: string
- *               registeredDate:
+ *               expired:
  *                 type: string
  *     responses:
  *       200:
@@ -490,10 +490,13 @@ app.post('/allow', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               email:
+ *               user:
  *                 type: string
- *               registeredDate:
+ *               date:
  *                 type: string
+ *               selllerID:
+ *                 type: string
+
  *     responses:
  *       200:
  *         description: Execution result
@@ -555,8 +558,10 @@ app.post('/count', awaitHandler(async (req, res) => {
  *               uniqID:
  *                 type: string
  *               email:
+ *                 user: string
+ *               date:
  *                 type: string
- *               registeredDate:
+ *               disdtID:
  *                 type: string
  *     responses:
  *       200:
