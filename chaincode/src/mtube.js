@@ -520,23 +520,24 @@ async queryContent(stub, args) {
     json['docType'] = 'content';
     json['docStatus'] = 'production';
 
-    console.log('##### addContent payload: ' + JSON.stringify(json));
+    console.log('##### production payload: ' + JSON.stringify(json));
 
     // Check if the  already exists
     let old = await stub.getState(key);
     
     if (old.toString()) {
   
-      console.log('##### addContent - This already exists: ' + json['uniqID']);
+      console.log('##### production - This already exists: ' + json['uniqID']);
       let oldjson = JOSN.parse(old.toString());
-      if(oldjson['docStatus'] == json['docStatus'])
+      /*if(oldjson['docStatus'] == json['docStatus'])
       {
-        throw new Error('##### use - This already same: ' + json['uniqID'] + oldjson['docStatus']);
+        throw new Error('##### production - docStatus: ' + json['uniqID'] + oldjson['docStatus']);
       }
       else {
         await stub.putState(key, Buffer.from(JSON.stringify(json)));
 
       }
+      */
 
     }
 
