@@ -210,7 +210,7 @@ app.post('/content', awaitHandler(async (req, res) => {
  * @swagger
  *
  * /content/{uniqID}:
- * uniqID}:
+ * uniqID:
  *   get:
  *     summary: queryContent
  *     tags:
@@ -298,7 +298,7 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
  *                 type: string
  *               email:
  *                 type: string
- *               registeredDate:
+ *               date:
  *                 type: string
  *     responses:
  *       200:
@@ -403,7 +403,7 @@ app.post('/use', awaitHandler(async (req, res) => {
  *   post:
  *     summary: add allow 
  *     tags:
- *       - Creator
+ *       - Distributor
  *     description: Add allow.
  *     parameters:
  *     - name: X-username
@@ -468,7 +468,7 @@ app.post('/allow', awaitHandler(async (req, res) => {
  *   post:
  *     summary: add count 
  *     tags:
- *       - Creator
+ *       - Seller
  *     description: Add count.
  *     parameters:
  *     - name: X-username
@@ -535,7 +535,7 @@ app.post('/count', awaitHandler(async (req, res) => {
  *   post:
  *     summary: add check 
  *     tags:
- *       - Creator
+ *       - Distributor
  *     description: Add check.
  *     parameters:
  *     - name: X-username
