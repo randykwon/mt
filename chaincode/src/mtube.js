@@ -522,14 +522,25 @@ async queryContent(stub, args) {
 
     console.log('##### addContent payload: ' + JSON.stringify(json));
 
-    // Check if the donor already exists
-    let addQuery = await stub.getState(key);
-    /*
-    if (addQuery.toString()) {
-      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+    // Check if the  already exists
+    let old = await stub.getState(key);
+    
+    if (old.toString()) {
+  
+      console.log('##### addContent - This already exists: ' + json['uniqID']);
+      let oldjson = JOSN.parse(old.toString());
+      if(oldjson['docStatus'] == json['docStatus'])
+      {
+        throw new Error('##### use - This already same: ' + json['uniqID'] + oldjson['docStatus']);
+      }
+      else {
+        await stub.putState(key, Buffer.from(JSON.stringify(json)));
+
+      }
+
     }
-*/
-    await stub.putState(key, Buffer.from(JSON.stringify(json)));
+
+  
     console.log('============= END : production ===========');
   }
 
@@ -560,7 +571,7 @@ async queryContent(stub, args) {
     // Check if the donor already exists
     let addQuery = await stub.getState(key);
     if (addQuery.toString()) {
-      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+      throw new Error('##### use - This already exists: ' + json['uniqID']);
     }
 
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
