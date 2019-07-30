@@ -9,8 +9,8 @@
     ],
     "admins":[
        {
-          "username":"admin1",
-          "secret":"Adminpassword123"
+          "username":"Admin",
+          "secret":"Password123"
        }
     ]
  }

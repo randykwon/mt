@@ -199,6 +199,7 @@ app.post('/content', awaitHandler(async (req, res) => {
 	
 
 	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	logger.info('================ POST on content: ' + message.toString());
 	res.send(message);
 
 }));
@@ -311,13 +312,13 @@ app.post('/production', awaitHandler(async (req, res) => {
 	let username = req.header("X-username");
 	let orgName = req.header("X-orgName");
 
-    logger.info('##### POST on addContent - username : ' + username);
-	logger.info('##### POST on addContent - userOrg : ' + orgName);
-	logger.info('##### POST on addContent - channelName : ' + channelName);
-	logger.info('##### POST on addContent - chaincodeName : ' + chaincodeName);
-	logger.info('##### POST on addContent - fcn : ' + fcn);
-	logger.info('##### POST on addContent - args : ' + JSON.stringify(args));
-	logger.info('##### POST on addContent - peers : ' + peers);
+    logger.info('##### POST on production - username : ' + username);
+	logger.info('##### POST on production - userOrg : ' + orgName);
+	logger.info('##### POST on production - channelName : ' + channelName);
+	logger.info('##### POST on production - chaincodeName : ' + chaincodeName);
+	logger.info('##### POST on production - fcn : ' + fcn);
+	logger.info('##### POST on production - args : ' + JSON.stringify(args));
+	logger.info('##### POST on production - peers : ' + peers);
 	
 
 	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);

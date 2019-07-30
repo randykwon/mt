@@ -527,8 +527,8 @@ async queryContent(stub, args) {
     
     if (old.toString()) {
   
-      console.log('##### production - This already exists: ' + json['uniqID']);
-      let oldjson = JOSN.parse(old.toString());
+     // console.log('##### production - This already exists: ' + json['uniqID']);
+     // let oldjson = JOSN.parse(old.toString());
       /*if(oldjson['docStatus'] == json['docStatus'])
       {
         throw new Error('##### production - docStatus: ' + json['uniqID'] + oldjson['docStatus']);
@@ -540,9 +540,9 @@ async queryContent(stub, args) {
       */
 
     }
-
-  
     console.log('============= END : production ===========');
+    return old;
+    
   }
 
   /**
