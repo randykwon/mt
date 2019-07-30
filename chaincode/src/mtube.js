@@ -524,7 +524,8 @@ async queryContent(stub, args) {
 
     // Check if the  already exists
     let old = await stub.getState(key);
-    
+    console.log(oldjson['docStatus']);
+  
     if (old.toString()) {
   
      // console.log('##### production - This already exists: ' + json['uniqID']);
