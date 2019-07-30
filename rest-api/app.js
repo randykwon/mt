@@ -210,7 +210,6 @@ app.post('/content', awaitHandler(async (req, res) => {
  * @swagger
  *
  * /content/{uniqID}:
- * uniqID:
  *   get:
  *     summary: queryContent
  *     tags:
@@ -242,7 +241,7 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
 		logger.info('================ GET on content by uniqID ');
 		logger.info('uniqID : ' + req.params.uniqID);
 		//let args = [];
-		args = req.params.uniqID;
+		let args = req.params.uniqID;
 		
 		let fcn = "queryContent";
 		let username = req.header("X-username");

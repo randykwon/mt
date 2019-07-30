@@ -524,10 +524,11 @@ async queryContent(stub, args) {
 
     // Check if the donor already exists
     let addQuery = await stub.getState(key);
+    /*
     if (addQuery.toString()) {
       throw new Error('##### addContent - This already exists: ' + json['uniqID']);
     }
-
+*/
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
     console.log('============= END : production ===========');
   }
