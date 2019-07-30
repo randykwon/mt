@@ -524,7 +524,7 @@ async queryContent(stub, args) {
 
     // Check if the  already exists
     let old = await stub.getState(key);
-    console.log(oldjson['docStatus']);
+    console.log(old['docStatus']);
   
     if (old.toString()) {
   
