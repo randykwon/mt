@@ -149,10 +149,10 @@ app.get('/health', awaitHandler(async (req, res) => {
  *
  * /content:
  *   post:
- *     summary: add new Content 
+ *     summary: register Content on mtbue
  *     tags:
  *       - Creator
- *     description: Add new Content.
+ *     description: register Content
  *     parameters:
  *     - name: X-username
  *       in: header
@@ -173,9 +173,11 @@ app.get('/health', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               email:
+ *               ownerID:
  *                 type: string
- *               metaInfo:
+ *               infos:
+ *                 type: string
+ *               regDate:
  *                 type: string
  *     responses:
  *       200:
@@ -184,7 +186,7 @@ app.get('/health', awaitHandler(async (req, res) => {
 app.post('/content', awaitHandler(async (req, res) => {
 	logger.info('================ POST on content (add content)');
 	var args = req.body;
-	var fcn = "addContent";
+	var fcn = "registerContent";
 
 	let username = req.header("X-username");
 	let orgName = req.header("X-orgName");
@@ -272,10 +274,10 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
  *
  * /production:
  *   post:
- *     summary: new production 
+ *     summary:  production ready
  *     tags:
  *       - Distributor
- *     description: new production.
+ *     description:  production.
  *     parameters:
  *     - name: X-username
  *       in: header
@@ -296,9 +298,7 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               email:
- *                 type: string
- *               date:
+ *               prodDate:
  *                 type: string
  *     responses:
  *       200:
@@ -322,6 +322,7 @@ app.post('/production', awaitHandler(async (req, res) => {
 	
 
 	let message = await invoke.invokeChaincode(peers, channelName, chaincodeName, args, fcn, username, orgName);
+	logger.info(message.toString());
 	res.send(message);
 
 }));
@@ -362,7 +363,7 @@ app.post('/production', awaitHandler(async (req, res) => {
  *                 type: string
  *               sellerID:
  *                 type: string
- *               date:
+ *               useDate:
  *                 type: string
  *     responses:
  *       200:
@@ -425,9 +426,11 @@ app.post('/use', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               sellerID:
+ *               startDate:
  *                 type: string
  *               expired:
+ *                 type: string
+ *               by:
  *                 type: string
  *     responses:
  *       200:
@@ -490,7 +493,7 @@ app.post('/allow', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               user:
+ *               userID:
  *                 type: string
  *               date:
  *                 type: string
@@ -602,7 +605,7 @@ app.post('/check', awaitHandler(async (req, res) => {
  *   post:
  *     summary: Register and enroll user.
  *     tags:
- *       - User
+ *       - UserRegister
  *     description: A user must be registered and enrolled before any queries or transactions can be invoked
  *     requestBody:
  *       required: true

@@ -455,36 +455,41 @@ let Chaincode = class {
    ************************************************************************************************/
 
    /**
-   * Creates a new donor
+   * register  Content
    * 
    * @param {*} stub 
    * @param {*} args - JSON as follows:
    * {
-   *    "donorUserName":"edge",
-   *    "email":"edge@abc.com",
-   *    "registeredDate":"2018-10-22T11:52:20.182Z"
+   *    "uniqID":"edge",
+   *    "onwerID":"edge@abc.com",
+   *    "Date":"2018-10-22T11:52:20.182Z"
    * }
    */
-  async addContent(stub, args) {
-    console.log('============= START : addContent ===========');
-    console.log('##### addContent arguments: ' + JSON.stringify(args));
+  async registerContent(stub, args) {
+    console.log('============= START : registerContent ===========');
+    console.log('##### registerContent arguments: ' + JSON.stringify(args));
 
     // args is passed as a JSON string
     let json = JSON.parse(args);
     let key = 'uniqID' + json['uniqID'];
-    json['docType'] = 'content';
-    json['docStatus'] = 'register';
+    // content type
+    json['docType'] = 'video';
+    // status register -> production -> use -> count-> checkNSum
+    json['register'] = 'Yes'+ Date.now().toString();
+    // set count zero
+    json['count'] = 0;
 
-    console.log('##### addContent payload: ' + JSON.stringify(json));
+    // check json
+    console.log('##### registerContent payload: ' + JSON.stringify(json));
 
-    // Check if the donor already exists
+    // Check if it already exists
     let addQuery = await stub.getState(key);
     if (addQuery.toString()) {
-      throw new Error('##### addContent -  already exists: ' + json['uniqID']);
+      throw new Error('##### registerContent -  already exists: check your uniqID!!!!' + json['uniqID']);
     }
 
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
-    console.log('============= END : addContent ===========');
+    console.log('============= END : registerContent ===========');
   }
 
   /**
@@ -498,7 +503,7 @@ async queryContent(stub, args) {
 
   // args is passed as a JSON string
   let json = JSON.parse(args);
-  let key = 'uniqID' + json.replace('"','').replace('"','');
+  let key = 'uniqID' + json.replace('"','').replace('"',''); // remove "
   //json['userID'];
   console.log('##### queryContent key: ' + key);
 
@@ -506,7 +511,7 @@ async queryContent(stub, args) {
 }
 
   /**
-   * provisioning
+   * production
    * @param {*} stub 
    * @param {*} args 
    */
@@ -517,30 +522,20 @@ async queryContent(stub, args) {
     // args is passed as a JSON string
     let json = JSON.parse(args);
     let key = 'uniqID' + json['uniqID'];
-    json['docType'] = 'content';
-    json['docStatus'] = 'production';
+    json['production'] = 'Yes'+ Date.now().toString();
 
     console.log('##### production payload: ' + JSON.stringify(json));
 
-    // Check if the  already exists
+    // get for check for exists
     let old = await stub.getState(key);
-    console.log(old['docStatus']);
+  //  console.log(old['docStatus']);
   
-    if (old.toString()) {
-  
-     // console.log('##### production - This already exists: ' + json['uniqID']);
-     // let oldjson = JOSN.parse(old.toString());
-      /*if(oldjson['docStatus'] == json['docStatus'])
-      {
-        throw new Error('##### production - docStatus: ' + json['uniqID'] + oldjson['docStatus']);
-      }
-      else {
-        await stub.putState(key, Buffer.from(JSON.stringify(json)));
-
-      }
-      */
-
+    if (!old.toString()) {
+      throw new Error('##### allow - This no exists: ' + json['uniqID']);
     }
+    // change pdocution status 
+     await stub.putState(key, Buffer.from(JSON.stringify(json)));
+   
     console.log('============= END : production ===========');
     return old;
     
@@ -554,6 +549,7 @@ async queryContent(stub, args) {
    * { 
    "uniqID": "000000001",
    "sellerID": "dj pumpkins", 
+   *"date"
    * 
    * 
    */
@@ -565,15 +561,16 @@ async queryContent(stub, args) {
     let json = JSON.parse(args);
     let key = 'uniqID' + json['uniqID'];
     json['docType'] = 'content';
-    json['docStatus'] = 'use';
+    json['use'] = 'Yes'+ Date.now().toString();
+
 
 
     console.log('##### addContent payload: ' + JSON.stringify(json));
 
     // Check if the donor already exists
-    let addQuery = await stub.getState(key);
-    if (addQuery.toString()) {
-      throw new Error('##### use - This already exists: ' + json['uniqID']);
+    let old = await stub.getState(key);
+    if (!old.toString()) {
+      throw new Error('##### allow - This no exists: ' + json['uniqID']);
     }
 
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
@@ -588,8 +585,8 @@ async queryContent(stub, args) {
    * 
    * { 
    "uniqID": "000000001",
-   "sellerID": "dj pumpkins", 
-   "expired": "20200909", }
+   "startDate": "dj pumpkins", 
+   "expired": "20200909", "by": "prod_uid"}
    */
   async allow(stub, args) {
     console.log('============= START : allow ===========');
@@ -598,16 +595,17 @@ async queryContent(stub, args) {
       // args is passed as a JSON string
     let json = JSON.parse(args);
     let key = 'uniqID' + json['uniqID'];
-    json['docType'] = 'content';
-    json['docStatus'] = 'allow';
+   // json['docType'] = 'content';
+    json['allow'] = 'Yes'+ Date.now().toString();
+
 
 
     console.log('##### addContent payload: ' + JSON.stringify(json));
 
     // Check if the donor already exists
-    let addQuery = await stub.getState(key);
-    if (addQuery.toString()) {
-      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+    let old = await stub.getState(key);
+    if (!old.toString()) {
+      throw new Error('##### allow - This no exists: ' + json['uniqID']);
     }
 
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
@@ -620,7 +618,7 @@ async queryContent(stub, args) {
    * 
    * { 
    "uniqID": "000000001",
-   "user": "1231231,", 
+   "userID": "1231231,", 
    "date": "20191212",
    "sellerID": "001010"
 }
@@ -632,18 +630,21 @@ async queryContent(stub, args) {
       // args is passed as a JSON string
     let json = JSON.parse(args);
     let key = 'uniqID' + json['uniqID'];
-    json['docType'] = 'content';
+    json['allow'] = 'Yes'+ Date.now().toString();
+
+    
 
 
 
     console.log('##### addContent payload: ' + JSON.stringify(json));
 
-    // Check if the donor already exists
-    let addQuery = await stub.getState(key);
-    if (addQuery.toString()) {
-      throw new Error('##### addContent - This already exists: ' + json['uniqID']);
+    let old = await stub.getState(key);
+    if (!old.toString()) {
+      throw new Error('##### allow - This no exists: ' + json['uniqID']);
     }
 
+    // count increment
+    json['count'] = query['count']++;
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
     console.log('============= END : count ===========');
   }
@@ -666,16 +667,16 @@ async queryContent(stub, args) {
       // args is passed as a JSON string
     let json = JSON.parse(args);
     let key = 'uniqID' + json['uniqID'];
-    json['docType'] = 'content';
+    json['check'] = 'Yes';
 
 
 
     console.log('##### check payload: ' + JSON.stringify(json));
 
-    // Check if the donor already exists
-    let addQuery = await stub.getState(key);
-    if (addQuery.toString()) {
-      throw new Error('##### check - This  exists: ' + json['uniqID']);
+    // check if it exists
+    let old = await stub.getState(key);
+    if (!old.toString()) {
+      throw new Error('##### check - not  exists: ' + json['uniqID']);
     }
 
     await stub.putState(key, Buffer.from(JSON.stringify(json)));
@@ -722,47 +723,6 @@ async queryContentBySeller(stub, args) {
   return queryByString(stub, queryString);
 }
 
-
-
-  /**
-   * register content
-   * @param {*} stub 
-   * 
-   * { 
-   "uid": "000000001",
-   "owner": "dj pumpkins", 
-   "email": "dj_pubkins@aaa.com", 
-   "registeredDate": "2018-10-22T11:52:20.182Z","type": "video",
-   "category":"music video",
-   "period": "6m",
-   "contract": "contract_a_type",
-   "status": "ready"
-   "number": "000000001"
-    }
-   * 
-   */
-  async register(stub, args) {
-    console.log('============= START : register ===========');
-    console.log('##### register arguments: ' + JSON.stringify(args));
-
-    //
-    // args is passed as a JSON string
-    let json = JSON.parse(args);
-    let key = 'uid' + json['uid'];
-    json['docType'] = 'creators';
-
-    console.log('##### register payload: ' + JSON.stringify(json));
-
-    // Check if the donor already exists
-    let keyQuery = await stub.getState(key);
-    if (keyQuery.toString()) {
-      throw new Error('##### register - This uid already exists: ' + json['uid']);
-    }
-
-    await stub.putState(key, Buffer.from(JSON.stringify(json)));
-    console.log('============= END : register ===========');
-  
-  }
 
 
   /************************************************************************************************
