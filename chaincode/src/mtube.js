@@ -671,7 +671,6 @@ async queryContent(stub, args) {
     
       newJson['docType'] = 'content';
       newJson['allow'] = 'Yes'+ Date.now().toString();
-      newJson['userID'] = json['userID'];
       newJson['date'] = json['date'];
       let newNum = newJson['count'];
       newJson['count'] = newNum + 1;
