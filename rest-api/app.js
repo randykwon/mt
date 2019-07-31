@@ -250,7 +250,11 @@ app.get('/content/:uniqID', awaitHandler(async (req, res) => {
 		let username = req.header("X-username");
 		let orgName = req.header("X-orgName");
 		logger.info('=====' + args);
-	
+
+		//??
+		let response = await connection.getRegisteredUser(username, orgName, true);
+
+
 		logger.info('##### End point : /queryContent');
 		logger.info('##### POST on addContent - username : ' + username);
 		logger.info('##### POST on addContent - userOrg : ' + orgName);
@@ -560,11 +564,7 @@ app.post('/count', awaitHandler(async (req, res) => {
  *             properties:
  *               uniqID:
  *                 type: string
- *               email:
- *                 user: string
- *               date:
- *                 type: string
- *               disdtID:
+ *               distID:
  *                 type: string
  *     responses:
  *       200:

@@ -54,10 +54,16 @@ async function getClientForOrg (userorg, username) {
 var getRegisteredUser = async function(username, userorg, isJson) {
 	try {
 		logger.info('============ START getRegisteredUser - for org %s and user %s', userorg, username);
-		var client = await getClientForOrg(userorg);
+		var client = await getClientForOrg(userorg,username); // ????
 		var user = await client.getUserContext(username, true);
 		if (user && user.isEnrolled()) {
 			logger.info('##### getRegisteredUser - User %s already enrolled', username);
+			//
+			logger.info('##### getRegisteredUser - Got admin property %s', util.inspect(admins));
+			let adminUserObj = await client.setUserContext({username: admins[0].username, password: admins[0].secret});
+			logger.info('##### getRegisteredUser - Got adminUserObj property %s', util.inspect(admins));
+			let caClient = client.getCertificateAuthority();
+			//
 		} else {
 			// user was not enrolled, so we will need an admin user object to register
 			logger.info('##### getRegisteredUser - User %s was not enrolled, so we will need an admin user object to register', username);
@@ -71,6 +77,7 @@ var getRegisteredUser = async function(username, userorg, isJson) {
 			let secret = await caClient.register({
 				enrollmentID: username
 			}, adminUserObj);
+			caClient.initCredentialStores
 			logger.info('##### getRegisteredUser - Successfully got the secret for user %s', username);
 			user = await client.setUserContext({username:username, password:secret});
 			logger.info('##### getRegisteredUser - Successfully enrolled username %s  and setUserContext on the client object', username);
